@@ -1,9 +1,9 @@
-import { VerticalBox, ListView } from "std-widgets.slint";
+git aimport { VerticalBox, Button, Text } from "std-widgets.slint";
 
 export struct MenuEntry {
-    number: string,
-    name: string,
-    command: string,
+    label: string,
+    actions: [string],
+    command_template: string,
 }
 
 export component MainWindow inherits Window {
@@ -11,7 +11,7 @@ export component MainWindow inherits Window {
     width: 400px;
     height: 500px;
 
-    callback run_command(int);
+    callback run_command(string);
     in property <[MenuEntry]> menu_items;
 
     VerticalBox {
@@ -21,35 +21,18 @@ export component MainWindow inherits Window {
             horizontal-alignment: center;
         }
 
-        Rectangle {
-            height: 1px;
-            background: #ccc;
-        }
+        for menu_item in menu_items: VerticalBox {
+            Text {
+                text: menu_item.label;
+                font-size: 18px;
+                horizontal-alignment: center;
+            }
 
-        ListView {
-            for item[i] in menu_items: Rectangle {
-                height: 40px;
-
-                VerticalLayout {
-                    padding: 5px;
-
-                    Text {
-                        text: item.number + ". " + item.name;
-                        font-size: 16px;
-                    }
-                }
-
-                TouchArea {
-                    width: 100%;
-                    height: 100%;
-                    clicked => {
-                        root.run_command(i);
-                    }
-                }
-
-                Rectangle {
-                    height: 1px;
-                    background: #eee;
+            for action in menu_item.actions: Button {
+                text: action;
+                clicked => {
+                    let command = menu_item.command_template.replace("<Action>", action);
+                    root.run_command(command);
                 }
             }
         }
