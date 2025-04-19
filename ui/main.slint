@@ -1,4 +1,4 @@
-import { VerticalBox, HorizontalBox, Button, Text } from "std-widgets.slint";
+import { VerticalBox, HorizontalBox, Button, ListView, Label } from "std-widgets.slint";
 
 export struct MenuEntry {
     label: string,
@@ -15,7 +15,7 @@ export component MainWindow inherits Window {
     in property <[MenuEntry]> menu_items;
 
     VerticalBox {
-        Text {
+        Label {
             text: "Menu Runner";
             font-size: 24px;
             horizontal-alignment: center;
@@ -27,7 +27,7 @@ export component MainWindow inherits Window {
         }
 
         for menu_item in menu_items: VerticalBox {
-            Text {
+            Label {
                 text: menu_item.label;
                 font-size: 18px;
                 horizontal-alignment: center;
@@ -42,8 +42,8 @@ export component MainWindow inherits Window {
                 for action in menu_item.actions: Button {
                     text: action;
                     clicked => {
-                        // Use a simple string interpolation to replace <Action> with the actual action
-                        root.run_command(menu_item.command-template.replace("<Action>", action));
+                        // Use a callback to handle this in Rust code
+                        root.run_command(menu_item.command-template + " " + action);
                     }
                 }
             }

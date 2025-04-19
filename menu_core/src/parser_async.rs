@@ -110,32 +110,30 @@ pub fn create_slint_menu_entries(commands: &[CommandInfo]) -> Vec<SlintMenuEntry
                 })
                 .collect();
             
-            // Get the command template by replacing the action with <Action>
+            // Get the command template - but format it to work with concatenation
+            // instead of using replace() since that's not available in Slint
             let first_cmd = &cmds[0];
             let cmd_parts: Vec<&str> = first_cmd.command.split(' ').collect();
-            let mut command_template = String::new();
             
-            // Reconstruct the command template
+            // Find which part contains the action and remove it to create a template
+            // that can be used with concatenation in Slint
+            let mut command_parts = Vec::new();
+            let mut action_index = 0;
+            
             for (i, part) in cmd_parts.iter().enumerate() {
-                if i > 0 {
-                    command_template.push(' ');
+                if actions.iter().any(|action| part.contains(action)) {
+                    action_index = i;
+                    break;
                 }
-                
-                // Check if this part contains the action
-                let mut found_action = false;
-                for action in &actions {
-                    if part.contains(action) {
-                        found_action = true;
-                        let replaced = part.replace(action, "<Action>");
-                        command_template.push_str(&replaced);
-                        break;
-                    }
-                }
-                
-                if !found_action {
-                    command_template.push_str(part);
-                }
+                command_parts.push(*part);
             }
+            
+            // Add the remaining parts after the action
+            for i in (action_index + 1)..cmd_parts.len() {
+                command_parts.push(cmd_parts[i]);
+            }
+            
+            let command_template = command_parts.join(" ");
             
             // Create the SlintMenuEntry
             result.push(SlintMenuEntry {
