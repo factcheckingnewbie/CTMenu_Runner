@@ -20,32 +20,31 @@ pub async fn load_menu_async() -> Vec<crate::models::CommandInfo> {
     }
 }
 
-// Updated the parser to ensure compatibility with the GUI structure in main.slint
 fn parse_future_menu_format(content: &str) -> Vec<CommandInfo> {
     let mut commands = Vec::new();
     let mut current_label = String::new();
     let mut current_actions: Vec<String> = Vec::new();
     let mut current_command = String::new();
-
+    
     for line in content.lines() {
         let trimmed = line.trim();
         if trimmed.is_empty() || trimmed.starts_with('#') {
             continue;
         }
-
+        
         if let Some(label) = trimmed.strip_prefix("Label:") {
             // Process previous entry if complete
             if !current_label.is_empty() && !current_actions.is_empty() && !current_command.is_empty() {
                 for action in &current_actions {
                     commands.push(CommandInfo {
-                        name: current_label.clone(),
+                        name: format!("{} {}", current_label, action),
                         command: current_command.replace("<Action>", action),
                         description: format!("{} operation for {}", action, current_label),
                         category: current_label.clone(),
                     });
                 }
             }
-
+            
             // Start a new entry
             current_label = label.trim().trim_matches('"').to_string();
             current_actions.clear();
@@ -59,19 +58,19 @@ fn parse_future_menu_format(content: &str) -> Vec<CommandInfo> {
             current_command = cmd.trim().trim_matches('"').to_string();
         }
     }
-
+    
     // Process the last entry
     if !current_label.is_empty() && !current_actions.is_empty() && !current_command.is_empty() {
         for action in &current_actions {
             commands.push(CommandInfo {
-                name: current_label.clone(),
+                name: format!("{} {}", current_label, action),
                 command: current_command.replace("<Action>", action),
                 description: format!("{} operation for {}", action, current_label),
                 category: current_label.clone(),
             });
         }
     }
-
+    
     println!("Parsed {} commands from future menu format", commands.len());
     commands
 }
