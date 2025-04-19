@@ -1,4 +1,4 @@
-import { VerticalBox, HorizontalBox, Button, ListView, Label } from "std-widgets.slint";
+import { VerticalBox, HorizontalBox, Button, ListView } from "std-widgets.slint";
 
 export struct MenuEntry {
     label: string,
@@ -15,10 +15,10 @@ export component MainWindow inherits Window {
     in property <[MenuEntry]> menu_items;
 
     VerticalBox {
-        Label {
+        Text {
             text: "Menu Runner";
             font-size: 24px;
-            horizontal-alignment: center;
+            horizontal-alignment: TextHorizontalAlignment.center;
         }
 
         Rectangle {
@@ -27,22 +27,21 @@ export component MainWindow inherits Window {
         }
 
         for menu_item in menu_items: VerticalBox {
-            Label {
+            Text {
                 text: menu_item.label;
                 font-size: 18px;
-                horizontal-alignment: center;
+                horizontal-alignment: TextHorizontalAlignment.center;
                 padding-top: 10px;
                 padding-bottom: 5px;
             }
 
             HorizontalBox {
-                alignment: center;
+                alignment: LayoutAlignment.center;
                 spacing: 5px;
                 
                 for action in menu_item.actions: Button {
                     text: action;
                     clicked => {
-                        // Use a callback to handle this in Rust code
                         root.run_command(menu_item.command-template + " " + action);
                     }
                 }
