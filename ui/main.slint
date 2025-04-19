@@ -11,7 +11,7 @@ export component MainWindow inherits Window {
     width: 400px;
     height: 500px;
 
-    callback run_command(string);
+    callback run_command(string, string);
     in property <[MenuEntry]> menu_items;
 
     VerticalBox {
@@ -42,9 +42,9 @@ export component MainWindow inherits Window {
                 for action in menu_item.actions: Button {
                     text: action;
                     clicked => {
-                        // Send just the action to be processed in Rust code
-                        // The command template is already set up to work with the action
-                        root.run_command(menu_item.command-template + " '" + action + "'");
+                        // Send both the command template and action to Rust
+                        // so it can properly replace <Action> with the action
+                        root.run_command(menu_item.command-template, action);
                     }
                 }
             }
