@@ -1,9 +1,9 @@
-import { VerticalBox, ListView } from "std-widgets.slint";
+import { VerticalBox, HorizontalBox, Button, Text } from "std-widgets.slint";
 
 export struct MenuEntry {
-    number: string,
-    name: string,
-    command: string,
+    label: string,
+    actions: [string],
+    command-template: string,
 }
 
 export component MainWindow inherits Window {
@@ -11,7 +11,7 @@ export component MainWindow inherits Window {
     width: 400px;
     height: 500px;
 
-    callback run_command(int);
+    callback run_command(string);
     in property <[MenuEntry]> menu_items;
 
     VerticalBox {
@@ -26,31 +26,31 @@ export component MainWindow inherits Window {
             background: #ccc;
         }
 
-        ListView {
-            for item[i] in menu_items: Rectangle {
-                height: 40px;
+        for menu_item in menu_items: VerticalBox {
+            Text {
+                text: menu_item.label;
+                font-size: 18px;
+                horizontal-alignment: center;
+                padding-top: 10px;
+                padding-bottom: 5px;
+            }
 
-                VerticalLayout {
-                    padding: 5px;
-
-                    Text {
-                        text: item.number + ". " + item.name;
-                        font-size: 16px;
-                    }
-                }
-
-                TouchArea {
-                    width: 100%;
-                    height: 100%;
+            HorizontalBox {
+                alignment: center;
+                spacing: 5px;
+                
+                for action in menu_item.actions: Button {
+                    text: action;
                     clicked => {
-                        root.run_command(i);
+                        // Use a simple string interpolation to replace <Action> with the actual action
+                        root.run_command(menu_item.command-template.replace("<Action>", action));
                     }
                 }
+            }
 
-                Rectangle {
-                    height: 1px;
-                    background: #eee;
-                }
+            Rectangle {
+                height: 1px;
+                background: #eee;
             }
         }
     }
