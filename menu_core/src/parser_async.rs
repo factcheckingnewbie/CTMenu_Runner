@@ -110,32 +110,34 @@ pub fn create_slint_menu_entries(commands: &[CommandInfo]) -> Vec<SlintMenuEntry
                 })
                 .collect();
             
-            // Get the command template - but format it to work with concatenation
-            // instead of using replace() since that's not available in Slint
+            // Get the original command template from the first command
             let first_cmd = &cmds[0];
-            let cmd_parts: Vec<&str> = first_cmd.command.split(' ').collect();
+            let original_cmd = &first_cmd.command;
             
-            // Find which part contains the action and remove it to create a template
-            // that can be used with concatenation in Slint
-            let mut command_parts = Vec::new();
-            let mut action_index = 0;
-            
-            for (i, part) in cmd_parts.iter().enumerate() {
-                if actions.iter().any(|action| part.contains(action)) {
-                    action_index = i;
-                    break;
+            // Find where <Action> should be in the original command
+            let (cmd_prefix, cmd_suffix) = if let Some(pos) = original_cmd.find("<Action>") {
+                let (prefix, suffix_with_action) = original_cmd.split_at(pos);
+                let suffix = &suffix_with_action["<Action>".len()..];
+                (prefix.to_string(), suffix.to_string())
+            } else {
+                // Fallback in case <Action> is not found directly
+                let first_action = &actions[0];
+                if let Some(pos) = original_cmd.find(first_action) {
+                    let (prefix, suffix_with_action) = original_cmd.split_at(pos);
+                    let suffix = &suffix_with_action[first_action.len()..];
+                    (prefix.to_string(), suffix.to_string())
+                } else {
+                    // If we can't find the action, just assume it goes at the end
+                    (original_cmd.to_string(), "".to_string())
                 }
-                command_parts.push(*part);
-            }
+            };
             
-            // Add the remaining parts after the action
-            for i in (action_index + 1)..cmd_parts.len() {
-                command_parts.push(cmd_parts[i]);
-            }
+            // For Slint, we'll create a template that can be used with string concatenation
+            // Format: "prefix-part" + action + "suffix-part"
+            // But since our UI just does command-template + " " + action, we need to adjust
+            let mut command_template = cmd_prefix.trim().to_string();
             
-            let command_template = command_parts.join(" ");
-            
-            // Create the SlintMenuEntry
+            // Create the SlintMenuEntry with proper formatting
             result.push(SlintMenuEntry {
                 label: category,
                 actions,
