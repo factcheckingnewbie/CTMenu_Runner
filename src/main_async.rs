@@ -2,13 +2,13 @@
 use std::rc::Rc;
 // Include the Slint modules defined in your .slint files
 slint::include_modules!();
-use slint::{ModelRc, VecModel, Model, SharedString};
+use slint::{ModelRc, VecModel, SharedString};
 use tokio::runtime::Runtime;
 use tokio::process::Command as TokioCommand;
 use tokio::task;
 
 // Import the core types from our menu_core library
-use Menu_Runner_core::{CommandInfo, SlintMenuEntry};
+use Menu_Runner_core::create_slint_menu_entries;
 
 fn main() {
     // Create the runtime with all features enabled
@@ -29,19 +29,22 @@ fn main() {
         println!("Successfully loaded {} menu items", commands.len());
         
         // Create the Slint menu entries from the command info
-        let slint_entries = Menu_Runner_core::create_slint_menu_entries(&commands);
+        let slint_entries = create_slint_menu_entries(&commands);
         println!("Created {} menu entries for the UI", slint_entries.len());
         
         // Convert SlintMenuEntry objects to the Slint UI format
         let menu_entries: Vec<MenuEntry> = slint_entries.iter().map(|entry| {
             // Convert the Rust types to Slint-compatible types
-            let actions: Vec<SharedString> = entry.actions.iter()
+            let actions_vec: Vec<SharedString> = entry.actions.iter()
                 .map(|a| a.clone().into())
                 .collect();
                 
+            // Create a VecModel from the actions and convert it to ModelRc
+            let actions_model = Rc::new(VecModel::from(actions_vec));
+                
             MenuEntry {
                 label: entry.label.clone().into(),
-                actions: actions.into(),
+                actions: ModelRc::from(actions_model),
                 command_template: entry.command_template.clone().into(),
             }
         }).collect();
