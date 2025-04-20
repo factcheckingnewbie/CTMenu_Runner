@@ -59,8 +59,8 @@ fn main() {
         main_window.set_menu_items(ModelRc::from(menu_model.clone()));
         
         // Set up command handler for when action buttons are clicked
-        main_window.on_run_command(move |command_str| {
-            let command_clone = command_str.to_string();
+        main_window.on_run_command(move |command_template, action| {
+            let command_clone = command_template.to_string().replace("<Action>", &action.to_string());
             println!("Running command asynchronously: {}", command_clone);
             
             // Spawn a new tokio task to execute the command asynchronously
