@@ -18,11 +18,11 @@ fn main() {
     rt.block_on(async {
         println!("Starting async menu loader...");
         
-        // Load menu asynchronously from your future_menu.txt file
-        let commands = Menu_Runner_core::load_menu_async().await;
+        // Load menu asynchronously from the JSON menu file (changed from txt)
+        let commands = Menu_Runner_core::load_menu_json_async().await;
         
         if commands.is_empty() {
-            println!("No valid menu items found. Please check your configs/future_menu.txt format.");
+            println!("No valid menu items found. Please check your configs/future_menu.json format.");
             return;
         }
         
@@ -61,15 +61,8 @@ fn main() {
         // Set up command handler for when action buttons are clicked
         main_window.on_run_command(move |command_template, action| {
             // Get the command template and replace the action placeholder
-            let mut command_str = command_template.to_string();
-            
-            // Replace the action placeholder
-            command_str = command_str.replace("'<Action>'", &action.to_string());
-            
-            // Remove any quotes that would be interpreted literally by the shell
-            command_str = command_str.replace("\"./target/debug/Menu_Runner_system\"", "./target/debug/Menu_Runner_system");
-            command_str = command_str.replace("\"firefox", "firefox");
-            command_str = command_str.trim_end_matches('"').to_string();
+            // In JSON format we use ACTION instead of '<Action>'
+            let command_str = command_template.to_string().replace("ACTION", &action.to_string());
             
             println!("Running command asynchronously: {}", command_str);
             

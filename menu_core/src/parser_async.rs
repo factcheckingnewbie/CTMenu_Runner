@@ -20,6 +20,24 @@ pub async fn load_menu_async() -> Vec<crate::models::CommandInfo> {
     }
 }
 
+// Parse menu items from a JSON format
+pub async fn load_menu_json_async() -> Vec<crate::models::CommandInfo> {
+    let menu_path = Path::new("configs/future_menu.json");
+    
+    if !menu_path.exists() {
+        println!("Error: configs/future_menu.json not found");
+        return Vec::new();
+    }
+    
+    match tokio_fs::read_to_string(menu_path).await {
+        Ok(content) => parse_json_menu_format(&content),
+        Err(e) => {
+            println!("Error reading future_menu.json: {}", e);
+            Vec::new()
+        }
+    }
+}
+
 // Parse the future_menu.txt format into CommandInfo objects
 fn parse_future_menu_format(content: &str) -> Vec<CommandInfo> {
     let mut commands = Vec::new();
@@ -75,6 +93,44 @@ fn parse_future_menu_format(content: &str) -> Vec<CommandInfo> {
     }
     
     println!("Parsed {} commands from future menu format", commands.len());
+    commands
+}
+
+// Parse the JSON menu format into CommandInfo objects
+fn parse_json_menu_format(content: &str) -> Vec<CommandInfo> {
+    let mut commands = Vec::new();
+    
+    match serde_json::from_str::<Vec<serde_json::Value>>(content) {
+        Ok(menu_items) => {
+            for item in menu_items {
+                if let (Some(label), Some(actions), Some(command_template)) = (
+                    item.get("label").and_then(|v| v.as_str()),
+                    item.get("actions").and_then(|v| v.as_array()),
+                    item.get("command").and_then(|v| v.as_str())
+                ) {
+                    for action_value in actions {
+                        if let Some(action) = action_value.as_str() {
+                            // Replace ACTION placeholder with the actual action
+                            let command = command_template.replace("ACTION", action);
+                            
+                            commands.push(CommandInfo {
+                                name: format!("{} {}", label, action),
+                                command,
+                                description: format!("{} operation for {}", action, label),
+                                category: label.to_string(),
+                            });
+                        }
+                    }
+                }
+            }
+            
+            println!("Parsed {} commands from JSON menu format", commands.len());
+        },
+        Err(e) => {
+            println!("Error parsing JSON menu: {}", e);
+        }
+    }
+    
     commands
 }
 
