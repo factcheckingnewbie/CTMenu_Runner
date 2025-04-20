@@ -1,11 +1,11 @@
 // Import necessary Rust and external crates
 use std::rc::Rc;
+use std::process::Command;
 // Include the Slint modules defined in your .slint files
 slint::include_modules!();
 use slint::{ModelRc, VecModel, SharedString};
 use tokio::runtime::Runtime;
 use tokio::process::Command as TokioCommand;
-use tokio::task;
 
 // Import the core types from our menu_core library
 use Menu_Runner_core::create_slint_menu_entries;
@@ -73,18 +73,12 @@ fn main() {
             
             println!("Running command synchronously: {}", command_str);
             
-            // Execute the command synchronously in the current task
-            // This will block the UI until the command completes
-            let output_result = rt.block_on(async {
-                println!("Executing command: {}", command_str);
-                
-                // Execute the command using shell
-                TokioCommand::new("sh")
-                    .arg("-c")
-                    .arg(&command_str)
-                    .output()
-                    .await
-            });
+            // Execute the command synchronously using std::process::Command
+            // This avoids the nested block_on issue
+            let output_result = Command::new("sh")
+                .arg("-c")
+                .arg(&command_str)
+                .output();
             
             match output_result {
                 Ok(output) => {
