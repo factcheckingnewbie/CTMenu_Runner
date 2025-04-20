@@ -41,10 +41,11 @@ export component MainWindow inherits Window {
                 
                 for action in menu_item.actions: Button {
                     text: action;
+                    property <string> current-action: action;
                     clicked => {
-                        // Send both the command template and action to Rust
-                        // so it can properly replace <Action> with the action
-                        root.run_command(menu_item.command-template, action);
+                        // Explicitly use the action from the loop's current scope
+                        // to ensure the correct action is passed, not hardcoded
+                        root.run_command(menu_item.command-template, self.current-action);
                     }
                 }
             }
