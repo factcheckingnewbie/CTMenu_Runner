@@ -168,26 +168,27 @@ pub fn create_slint_menu_entries(commands: &[CommandInfo]) -> Vec<SlintMenuEntry
                 })
                 .collect();
             
-            // Get the original command template from the first command
-            let first_cmd = &cmds[0];
-            let original_cmd = &first_cmd.command;
+            // For JSON format, we need to restore the ACTION placeholder in the command template
+            // Find the command template from the configuration
+            let first_cmd = &cmds[0]; 
             
-            // Store the original command with <Action> placeholder for Slint to use
-            // Keep the original command format with <Action> placeholder
-            let command_template = if original_cmd.contains("<Action>") {
-                original_cmd.clone()
-            } else {
-                // If <Action> is not found, use the command as-is
-                // This is a fallback, but the menu file should use <Action> placeholders
-                original_cmd.clone()
-            };
-            
-            // Create the SlintMenuEntry
-            result.push(SlintMenuEntry {
-                label: category,
-                actions,
-                command_template,
-            });
+            // Get the original command pattern by examining the structure
+            let command_parts: Vec<&str> = first_cmd.command.split(' ').collect();
+            if command_parts.len() >= 3 {
+                let executable = command_parts[0];
+                // Skip the action part (index 1)
+                let rest: Vec<&str> = command_parts[2..].to_vec();
+                
+                // Reconstruct the command template with ACTION placeholder
+                let command_template = format!("{} ACTION {}", executable, rest.join(" "));
+                
+                // Create the SlintMenuEntry
+                result.push(SlintMenuEntry {
+                    label: category,
+                    actions,
+                    command_template,
+                });
+            }
         }
     }
     

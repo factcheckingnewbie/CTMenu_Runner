@@ -61,40 +61,48 @@ fn main() {
         // Set up command handler for when action buttons are clicked
         main_window.on_run_command(move |command_template, action| {
             // Get the command template and replace the action placeholder
-            // In JSON format we use ACTION instead of '<Action>'
-            let command_str = command_template.to_string().replace("ACTION", &action.to_string());
+            let mut command_str = command_template.to_string();
             
-            println!("Running command asynchronously: {}", command_str);
+            // Replace the action placeholder
+            command_str = command_str.replace("ACTION", &action.to_string());
             
-            // Spawn a new tokio task to execute the command asynchronously
-            task::spawn(async move {
-                println!("Executing in async task: {}", command_str);
+            // Remove any quotes that would be interpreted literally by the shell
+            command_str = command_str.replace("\"./target/debug/Menu_Runner_system\"", "./target/debug/Menu_Runner_system");
+            command_str = command_str.replace("\"firefox", "firefox");
+            command_str = command_str.trim_end_matches('"').to_string();
+            
+            println!("Running command synchronously: {}", command_str);
+            
+            // Execute the command synchronously in the current task
+            // This will block the UI until the command completes
+            let output_result = rt.block_on(async {
+                println!("Executing command: {}", command_str);
                 
-                // Execute the command asynchronously using shell
-                let output = TokioCommand::new("sh")
+                // Execute the command using shell
+                TokioCommand::new("sh")
                     .arg("-c")
                     .arg(&command_str)
                     .output()
-                    .await;
-                
-                match output {
-                    Ok(output) => {
-                        let status = output.status;
-                        let stdout = String::from_utf8_lossy(&output.stdout).to_string();
-                        let stderr = String::from_utf8_lossy(&output.stderr).to_string();
-                        
-                        println!("Command completed with status: {}", status);
-                        println!("Output: {}", stdout);
-                        
-                        if !stderr.is_empty() {
-                            println!("Errors: {}", stderr);
-                        }
-                    },
-                    Err(e) => {
-                        println!("Failed to execute command: {}", e);
-                    }
-                }
+                    .await
             });
+            
+            match output_result {
+                Ok(output) => {
+                    let status = output.status;
+                    let stdout = String::from_utf8_lossy(&output.stdout).to_string();
+                    let stderr = String::from_utf8_lossy(&output.stderr).to_string();
+                    
+                    println!("Command completed with status: {}", status);
+                    println!("Output: {}", stdout);
+                    
+                    if !stderr.is_empty() {
+                        println!("Errors: {}", stderr);
+                    }
+                },
+                Err(e) => {
+                    println!("Failed to execute command: {}", e);
+                }
+            }
         });
         
         println!("Starting UI...");
