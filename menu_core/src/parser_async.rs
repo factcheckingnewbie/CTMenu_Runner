@@ -151,43 +151,50 @@ pub fn group_menu_commands(commands: &[CommandInfo]) -> HashMap<String, Vec<Comm
 
 // Create Slint menu entries for the new GUI format
 pub fn create_slint_menu_entries(commands: &[CommandInfo]) -> Vec<SlintMenuEntry> {
-    let grouped = group_menu_commands(commands);
+    // Group commands by category
+    let mut grouped = group_menu_commands(commands);
     let mut result = Vec::new();
     
-    for (category, cmds) in grouped {
-        if !cmds.is_empty() {
-            // Extract all actions for this category
-            let actions: Vec<String> = cmds.iter()
-                .map(|cmd| {
-                    let parts: Vec<&str> = cmd.name.split(' ').collect();
-                    if parts.len() > 1 {
-                        parts[parts.len() - 1].to_string()
-                    } else {
-                        cmd.name.clone()
-                    }
-                })
-                .collect();
-            
-            // For JSON format, we need to restore the ACTION placeholder in the command template
-            // Find the command template from the configuration
-            let first_cmd = &cmds[0]; 
-            
-            // Get the original command pattern by examining the structure
-            let command_parts: Vec<&str> = first_cmd.command.split(' ').collect();
-            if command_parts.len() >= 3 {
-                let executable = command_parts[0];
-                // Skip the action part (index 1)
-                let rest: Vec<&str> = command_parts[2..].to_vec();
+    // Get a sorted list of categories to ensure consistent order
+    let mut categories: Vec<String> = grouped.keys().cloned().collect();
+    categories.sort(); // Sort alphabetically for consistent order
+    
+    for category in categories {
+        if let Some(cmds) = grouped.get(&category) {
+            if !cmds.is_empty() {
+                // Extract all actions for this category
+                let actions: Vec<String> = cmds.iter()
+                    .map(|cmd| {
+                        let parts: Vec<&str> = cmd.name.split(' ').collect();
+                        if parts.len() > 1 {
+                            parts[parts.len() - 1].to_string()
+                        } else {
+                            cmd.name.clone()
+                        }
+                    })
+                    .collect();
                 
-                // Reconstruct the command template with ACTION placeholder
-                let command_template = format!("{} ACTION {}", executable, rest.join(" "));
+                // For JSON format, we need to restore the ACTION placeholder in the command template
+                // Find the command template from the configuration
+                let first_cmd = &cmds[0]; 
                 
-                // Create the SlintMenuEntry
-                result.push(SlintMenuEntry {
-                    label: category,
-                    actions,
-                    command_template,
-                });
+                // Get the original command pattern by examining the structure
+                let command_parts: Vec<&str> = first_cmd.command.split(' ').collect();
+                if command_parts.len() >= 3 {
+                    let executable = command_parts[0];
+                    // Skip the action part (index 1)
+                    let rest: Vec<&str> = command_parts[2..].to_vec();
+                    
+                    // Reconstruct the command template with ACTION placeholder
+                    let command_template = format!("{} ACTION {}", executable, rest.join(" "));
+                    
+                    // Create the SlintMenuEntry
+                    result.push(SlintMenuEntry {
+                        label: category,
+                        actions,
+                        command_template,
+                    });
+                }
             }
         }
     }
