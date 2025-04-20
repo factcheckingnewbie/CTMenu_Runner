@@ -39,7 +39,7 @@ fn parse_future_menu_format(content: &str) -> Vec<CommandInfo> {
                 for action in &current_actions {
                     commands.push(CommandInfo {
                         name: format!("{} {}", current_label, action),
-                        command: current_command.replace("<Action>", action),
+                        command: current_command.replace("'<Action>'", action).replace("<Action>", action),
                         description: format!("{} operation for {}", action, current_label),
                         category: current_label.clone(),
                     });
@@ -51,7 +51,9 @@ fn parse_future_menu_format(content: &str) -> Vec<CommandInfo> {
             current_actions.clear();
             current_command.clear();
         } else if let Some(actions) = trimmed.strip_prefix("Actions:") {
-            current_actions = actions
+            // Remove trailing colon if present
+            let cleaned_actions = actions.trim_end_matches(':');
+            current_actions = cleaned_actions
                 .split_whitespace()
                 .map(|s| s.trim_matches('"').to_string())
                 .collect();
@@ -65,7 +67,7 @@ fn parse_future_menu_format(content: &str) -> Vec<CommandInfo> {
         for action in &current_actions {
             commands.push(CommandInfo {
                 name: format!("{} {}", current_label, action),
-                command: current_command.replace("<Action>", action),
+                command: current_command.replace("'<Action>'", action).replace("<Action>", action),
                 description: format!("{} operation for {}", action, current_label),
                 category: current_label.clone(),
             });
