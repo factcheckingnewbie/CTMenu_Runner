@@ -60,17 +60,27 @@ fn main() {
         
         // Set up command handler for when action buttons are clicked
         main_window.on_run_command(move |command_template, action| {
-            let command_clone = command_template.to_string().replace("<Action>", &action.to_string());
-            println!("Running command asynchronously: {}", command_clone);
+            // Get the command template and replace the action placeholder
+            let mut command_str = command_template.to_string();
+            
+            // Replace the action placeholder
+            command_str = command_str.replace("'<Action>'", &action.to_string());
+            
+            // Remove any quotes that would be interpreted literally by the shell
+            command_str = command_str.replace("\"./target/debug/Menu_Runner_system\"", "./target/debug/Menu_Runner_system");
+            command_str = command_str.replace("\"firefox", "firefox");
+            command_str = command_str.trim_end_matches('"').to_string();
+            
+            println!("Running command asynchronously: {}", command_str);
             
             // Spawn a new tokio task to execute the command asynchronously
             task::spawn(async move {
-                println!("Executing in async task: {}", command_clone);
+                println!("Executing in async task: {}", command_str);
                 
                 // Execute the command asynchronously using shell
                 let output = TokioCommand::new("sh")
                     .arg("-c")
-                    .arg(&command_clone)
+                    .arg(&command_str)
                     .output()
                     .await;
                 
