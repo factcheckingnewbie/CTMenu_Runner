@@ -1,159 +1,5 @@
 [
   {
-    "label": "Async",
-    "actions": [
-      "start"
-,
-      "freeze"
-,
-      "unfreeze"
-,
-      "kill"
-    ],
-    "command": "./target/debug/Menu_Runner_system ACTION firefox /home/ptr/Stuff/Settings/firefox/1myymfyv.Async"
-  }
-,
-  {
-    "label": "Models",
-    "actions": [
-      "start"
-,
-      "freeze"
-,
-      "unfreeze"
-,
-      "kill"
-    ],
-    "command": "./target/debug/Menu_Runner_system ACTION firefox /home/ptr/Stuff/Settings/firefox/4tdusvfo.Models"
-  }
-,
-  {
-    "label": "Slask",
-    "actions": [
-      "start"
-,
-      "freeze"
-,
-      "unfreeze"
-,
-      "kill"
-    ],
-    "command": "./target/debug/Menu_Runner_system ACTION firefox /home/ptr/Stuff/Settings/firefox/7pdosm80.Slask"
-  }
-,
-  {
-    "label": "Development_Read",
-    "actions": [
-      "start"
-,
-      "freeze"
-,
-      "unfreeze"
-,
-      "kill"
-    ],
-    "command": "./target/debug/Menu_Runner_system ACTION firefox /home/ptr/Stuff/Settings/firefox/9bvrshko.Development_Read"
-  }
-,
-  {
-    "label": "Interfaces",
-    "actions": [
-      "start"
-,
-      "freeze"
-,
-      "unfreeze"
-,
-      "kill"
-    ],
-    "command": "./target/debug/Menu_Runner_system ACTION firefox /home/ptr/Stuff/Settings/firefox/b8ldjb8g.Interfaces"
-  }
-,
-  {
-    "label": "firefox",
-    "actions": [
-      "start"
-,
-      "freeze"
-,
-      "unfreeze"
-,
-      "kill"
-    ],
-    "command": "./target/debug/Menu_Runner_system ACTION firefox /home/ptr/Stuff/Settings/firefox/config.firefox"
-  }
-,
-  {
-    "label": "AI-CHATT",
-    "actions": [
-      "start"
-,
-      "freeze"
-,
-      "unfreeze"
-,
-      "kill"
-    ],
-    "command": "./target/debug/Menu_Runner_system ACTION firefox /home/ptr/Stuff/Settings/firefox/dl6aek56.AI-CHATT"
-  }
-,
-  {
-    "label": "Media",
-    "actions": [
-      "start"
-,
-      "freeze"
-,
-      "unfreeze"
-,
-      "kill"
-    ],
-    "command": "./target/debug/Menu_Runner_system ACTION firefox /home/ptr/Stuff/Settings/firefox/dwj547bg.Media"
-  }
-,
-  {
-    "label": "Tmp",
-    "actions": [
-      "start"
-,
-      "freeze"
-,
-      "unfreeze"
-,
-      "kill"
-    ],
-    "command": "./target/debug/Menu_Runner_system ACTION firefox /home/ptr/Stuff/Settings/firefox/j1m7yh8h.Tmp"
-  }
-,
-  {
-    "label": "Gui-Rust",
-    "actions": [
-      "start"
-,
-      "freeze"
-,
-      "unfreeze"
-,
-      "kill"
-    ],
-    "command": "./target/debug/Menu_Runner_system ACTION firefox /home/ptr/Stuff/Settings/firefox/lmjb25cu.Gui-Rust"
-  }
-,
-  {
-    "label": "Misc",
-    "actions": [
-      "start"
-,
-      "freeze"
-,
-      "unfreeze"
-,
-      "kill"
-    ],
-    "command": "./target/debug/Menu_Runner_system ACTION firefox /home/ptr/Stuff/Settings/firefox/msbme4k1.Misc"
-  }
-,
-  {
     "label": "AI-chat-Behavior",
     "actions": [
       "start"
@@ -164,7 +10,21 @@
 ,
       "kill"
     ],
-    "command": "./target/debug/Menu_Runner_system ACTION firefox /home/ptr/Stuff/Settings/firefox/okncsyl1.AI-chat-Behavior"
+    "command": "./target/debug/Menu_Runner_system ACTION firefox /home/ptr/Stuff/Settings/firefox/0.AI-chat-Behavior"
+  }
+,
+  {
+    "label": "AI-Chatt",
+    "actions": [
+      "start"
+,
+      "freeze"
+,
+      "unfreeze"
+,
+      "kill"
+    ],
+    "command": "./target/debug/Menu_Runner_system ACTION firefox /home/ptr/Stuff/Settings/firefox/0.AI-Chatt"
   }
 ,
   {
@@ -178,11 +38,11 @@
 ,
       "kill"
     ],
-    "command": "./target/debug/Menu_Runner_system ACTION firefox /home/ptr/Stuff/Settings/firefox/orj967u2.AI_Suite"
+    "command": "./target/debug/Menu_Runner_system ACTION firefox /home/ptr/Stuff/Settings/firefox/0.AI_Suite"
   }
 ,
   {
-    "label": "VibeCoding",
+    "label": "config_firefox",
     "actions": [
       "start"
 ,
@@ -192,11 +52,11 @@
 ,
       "kill"
     ],
-    "command": "./target/debug/Menu_Runner_system ACTION firefox /home/ptr/Stuff/Settings/firefox/p5xdzn4s.VibeCoding"
+    "command": "./target/debug/Menu_Runner_system ACTION firefox /home/ptr/Stuff/Settings/firefox/0.config_firefox"
   }
 ,
   {
-    "label": "pc",
+    "label": "Development_Read",
     "actions": [
       "start"
 ,
@@ -206,11 +66,11 @@
 ,
       "kill"
     ],
-    "command": "./target/debug/Menu_Runner_system ACTION firefox /home/ptr/Stuff/Settings/firefox/RemotecCTRL.pc"
+    "command": "./target/debug/Menu_Runner_system ACTION firefox /home/ptr/Stuff/Settings/firefox/0.Development_Read"
   }
 ,
   {
-    "label": "0",
+    "label": "Github",
     "actions": [
       "start"
 ,
@@ -220,7 +80,7 @@
 ,
       "kill"
     ],
-    "command": "./target/debug/Menu_Runner_system ACTION firefox /home/ptr/Stuff/Settings/firefox/Slinit.0"
+    "command": "./target/debug/Menu_Runner_system ACTION firefox /home/ptr/Stuff/Settings/firefox/0.Github"
   }
 ,
   {
@@ -234,6 +94,188 @@
 ,
       "kill"
     ],
-    "command": "./target/debug/Menu_Runner_system ACTION firefox /home/ptr/Stuff/Settings/firefox/utzk9f3u.Grafikkort"
+    "command": "./target/debug/Menu_Runner_system ACTION firefox /home/ptr/Stuff/Settings/firefox/0.Grafikkort"
+  }
+,
+  {
+    "label": "Gui-Rust",
+    "actions": [
+      "start"
+,
+      "freeze"
+,
+      "unfreeze"
+,
+      "kill"
+    ],
+    "command": "./target/debug/Menu_Runner_system ACTION firefox /home/ptr/Stuff/Settings/firefox/0.Gui-Rust"
+  }
+,
+  {
+    "label": "Interfaces",
+    "actions": [
+      "start"
+,
+      "freeze"
+,
+      "unfreeze"
+,
+      "kill"
+    ],
+    "command": "./target/debug/Menu_Runner_system ACTION firefox /home/ptr/Stuff/Settings/firefox/0.Interfaces"
+  }
+,
+  {
+    "label": "Media",
+    "actions": [
+      "start"
+,
+      "freeze"
+,
+      "unfreeze"
+,
+      "kill"
+    ],
+    "command": "./target/debug/Menu_Runner_system ACTION firefox /home/ptr/Stuff/Settings/firefox/0.Media"
+  }
+,
+  {
+    "label": "Menu_Runner",
+    "actions": [
+      "start"
+,
+      "freeze"
+,
+      "unfreeze"
+,
+      "kill"
+    ],
+    "command": "./target/debug/Menu_Runner_system ACTION firefox /home/ptr/Stuff/Settings/firefox/0.Menu_Runner"
+  }
+,
+  {
+    "label": "Misc",
+    "actions": [
+      "start"
+,
+      "freeze"
+,
+      "unfreeze"
+,
+      "kill"
+    ],
+    "command": "./target/debug/Menu_Runner_system ACTION firefox /home/ptr/Stuff/Settings/firefox/0.Misc"
+  }
+,
+  {
+    "label": "Models",
+    "actions": [
+      "start"
+,
+      "freeze"
+,
+      "unfreeze"
+,
+      "kill"
+    ],
+    "command": "./target/debug/Menu_Runner_system ACTION firefox /home/ptr/Stuff/Settings/firefox/0.Models"
+  }
+,
+  {
+    "label": "MumLar",
+    "actions": [
+      "start"
+,
+      "freeze"
+,
+      "unfreeze"
+,
+      "kill"
+    ],
+    "command": "./target/debug/Menu_Runner_system ACTION firefox /home/ptr/Stuff/Settings/firefox/0.MumLar"
+  }
+,
+  {
+    "label": "python-Async",
+    "actions": [
+      "start"
+,
+      "freeze"
+,
+      "unfreeze"
+,
+      "kill"
+    ],
+    "command": "./target/debug/Menu_Runner_system ACTION firefox /home/ptr/Stuff/Settings/firefox/0.python-Async"
+  }
+,
+  {
+    "label": "remoteAccess",
+    "actions": [
+      "start"
+,
+      "freeze"
+,
+      "unfreeze"
+,
+      "kill"
+    ],
+    "command": "./target/debug/Menu_Runner_system ACTION firefox /home/ptr/Stuff/Settings/firefox/0.remoteAccess"
+  }
+,
+  {
+    "label": "Slask",
+    "actions": [
+      "start"
+,
+      "freeze"
+,
+      "unfreeze"
+,
+      "kill"
+    ],
+    "command": "./target/debug/Menu_Runner_system ACTION firefox /home/ptr/Stuff/Settings/firefox/0.Slask"
+  }
+,
+  {
+    "label": "Slint",
+    "actions": [
+      "start"
+,
+      "freeze"
+,
+      "unfreeze"
+,
+      "kill"
+    ],
+    "command": "./target/debug/Menu_Runner_system ACTION firefox /home/ptr/Stuff/Settings/firefox/0.Slint"
+  }
+,
+  {
+    "label": "Tmp",
+    "actions": [
+      "start"
+,
+      "freeze"
+,
+      "unfreeze"
+,
+      "kill"
+    ],
+    "command": "./target/debug/Menu_Runner_system ACTION firefox /home/ptr/Stuff/Settings/firefox/0.Tmp"
+  }
+,
+  {
+    "label": "VibeCoding",
+    "actions": [
+      "start"
+,
+      "freeze"
+,
+      "unfreeze"
+,
+      "kill"
+    ],
+    "command": "./target/debug/Menu_Runner_system ACTION firefox /home/ptr/Stuff/Settings/firefox/0.VibeCoding"
   }
 ]
