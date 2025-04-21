@@ -1,26 +1,34 @@
 #!/bin/bash
 # filepath: /workspaces/CTMenu_Runner/maintance/create_future_menu_json.sh
 
-# Start JSON object with button types and profiles
+# Start JSON object with button definitions and profiles
 echo "{"
 
-# Define global button types and their state behavior (without colors)
+# Define global button types and their state behavior
 echo "  \"button_types\": {"
 echo "    \"start\": {"
 echo "      \"applicable_states\": [\"stopped\", \"killed\"],"
-echo "      \"next_state\": \"started\""
+echo "      \"next_state\": \"started\","
+echo "      \"highlight_color\": \"#00AA00\","
+echo "      \"inactive_color\": \"#005500\""
 echo "    },"
 echo "    \"freeze\": {"
 echo "      \"applicable_states\": [\"started\"],"
-echo "      \"next_state\": \"frozen\""
+echo "      \"next_state\": \"frozen\","
+echo "      \"highlight_color\": \"#0000AA\","
+echo "      \"inactive_color\": \"#000055\""
 echo "    },"
 echo "    \"unfreeze\": {"
 echo "      \"applicable_states\": [\"frozen\"],"
-echo "      \"next_state\": \"started\""
+echo "      \"next_state\": \"started\","
+echo "      \"highlight_color\": \"#00AAAA\","
+echo "      \"inactive_color\": \"#005555\""
 echo "    },"
 echo "    \"kill\": {"
 echo "      \"applicable_states\": [\"started\", \"frozen\"],"
-echo "      \"next_state\": \"killed\""
+echo "      \"next_state\": \"killed\","
+echo "      \"highlight_color\": \"#AA0000\","
+echo "      \"inactive_color\": \"#550000\""
 echo "    }"
 echo "  },"
 
@@ -58,5 +66,5 @@ for profile in ~/Stuff/Settings/firefox/*; do
 done
 
 echo "    }"
-echo "  ]" 
+echo "  ]"
 echo "}"
