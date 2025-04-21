@@ -53,6 +53,8 @@
     - freeze
     - unfreeze
     - kill
+    - toggled
+    - untoggled
   command: "./target/debug/Menu_Runner_system ACTION firefox /home/ptr/Stuff/Settings/firefox/0.Grafikkort"
 
 - label: "Gui-Rust"
