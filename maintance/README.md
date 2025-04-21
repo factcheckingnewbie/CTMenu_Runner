@@ -1,1 +1,1 @@
-run ./create_menu_txt.sh>../configs/menu.txt
+run ./create_future_menu_json.sh>../configs/future_menu.json
