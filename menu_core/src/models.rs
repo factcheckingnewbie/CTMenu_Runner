@@ -1,3 +1,4 @@
+use serde::{Deserialize, Serialize}
 /// menu_core/src/models.rs
 /// Represents a single menu command entry
 #[derive(Clone)]
@@ -15,7 +16,8 @@ pub struct GroupedMenuEntry {
 }
 
 /// Represents detailed command information with category and description
-#[derive(Clone)]
+/// #[derive(Clone)]
+#[derive(Clone, Serialize, Deserialize)]
 pub struct CommandInfo {
     pub name: String,
     pub command: String,

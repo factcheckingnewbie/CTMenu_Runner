@@ -37,6 +37,23 @@ pub async fn load_menu_json_async() -> Vec<crate::models::CommandInfo> {
         }
     }
 }
+ // Parse menu items from a YAML format
+ pub async fn load_menu_yaml_async() -> Vec<crate::models::CommandInfo> {
+     let menu_path = Path::new("configs/menu_config.yaml");
+     
+     if !menu_path.exists() {
+         println!("Error: configs/menu_config.yaml not found");
+         return Vec::new();
+     }
+     
+     match tokio_fs::read_to_string(menu_path).await {
+         Ok(content) => parse_yaml_menu_format(&content),
+         Err(e) => {
+             println!("Error reading menu_config.yaml: {}", e);
+             Vec::new()
+         }
+     }
+ }
 
 // Parse the future_menu.txt format into CommandInfo objects
 fn parse_future_menu_format(content: &str) -> Vec<CommandInfo> {
@@ -133,7 +150,43 @@ fn parse_json_menu_format(content: &str) -> Vec<CommandInfo> {
     
     commands
 }
-
+/// Parse the YAML menu format into CommandInfo objects
+ fn parse_yaml_menu_format(content: &str) -> Vec<CommandInfo> {
+     let mut commands = Vec::new();
+     
+     match serde_yaml::from_str::<Vec<serde_yaml::Value>>(content) {
+         Ok(menu_items) => {
+             for item in menu_items {
+                 if let (Some(label), Some(actions), Some(command_template)) = (
+                     item.get("label").and_then(|v| v.as_str()),
+                     item.get("actions").and_then(|v| v.as_sequence()),
+                     item.get("command").and_then(|v| v.as_str())
+                 ) {
+                     for action_value in actions {
+                         if let Some(action) = action_value.as_str() {
+                             // Replace ACTION placeholder with the actual action
+                             let command = command_template.replace("ACTION", action);
+                             
+                             commands.push(CommandInfo {
+                                 name: format!("{} {}", label, action),
+                                 command,
+                                 description: format!("{} operation for {}", action, label),
+                                 category: label.to_string(),
+                             });
+                         }
+                     }
+                 }
+             }
+             
+             println!("Parsed {} commands from YAML menu format", commands.len());
+         },
+         Err(e) => {
+             println!("Error parsing YAML menu: {}", e);
+         }
+     }
+     
+     commands
+ }
 // Helper function for grouping commands by category (Label)
 pub fn group_menu_commands(commands: &[CommandInfo]) -> HashMap<String, Vec<CommandInfo>> {
     let mut grouped: HashMap<String, Vec<CommandInfo>> = HashMap::new();

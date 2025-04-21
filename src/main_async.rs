@@ -19,11 +19,12 @@ fn main() {
         println!("Starting async menu loader...");
         
         // Load menu asynchronously from the JSON menu file (changed from txt)
-        let commands = Menu_Runner_core::load_menu_json_async().await;
-        
+//        let commands = Menu_Runner_core::load_menu_json_async().await;
+        let commands = Menu_Runner_core::load_menu_yaml_async().await;        
         if commands.is_empty() {
-            println!("No valid menu items found. Please check your configs/future_menu.json format.");
-            return;
+           // println!("No valid menu items found. Please check your configs/future_menu.json format.");
+           println!("No valid menu items found. Please check your configs/menu_config.yaml format.");
+           return;
         }
         
         println!("Successfully loaded {} menu items", commands.len());
