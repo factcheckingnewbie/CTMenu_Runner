@@ -12,8 +12,15 @@ export component MainWindow inherits Window {
     height: 500px;
 
     callback run_command(string, string);
+    callback get_button_color(string, string) -> string;
+    callback refresh();    
     in property <[MenuEntry]> menu_items;
-
+    // Function to trigger UI refresh
+ //   public function trigger_refresh() {
+  public function trigger_refresh() {    
+        self.refresh();
+    }
+    
     VerticalBox {
         Text {
             text: "Menu Runner";

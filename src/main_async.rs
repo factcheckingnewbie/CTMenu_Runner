@@ -1,14 +1,17 @@
 // Import necessary Rust and external crates
 use std::rc::Rc;
 use std::process::Command;
+use std::sync::Mutex;
+
 // Include the Slint modules defined in your .slint files
 slint::include_modules!();
 use slint::{ModelRc, VecModel, SharedString};
 use tokio::runtime::Runtime;
-use tokio::process::Command as TokioCommand;
+// use tokio::process::Command as TokioCommand;
 
 // Import the core types from our menu_core library
-use Menu_Runner_core::create_slint_menu_entries;
+// use Menu_Runner_core::create_slint_menu_entries;
+use Menu_Runner_core::{create_slint_menu_entries, models::ButtonManager};
 
 fn main() {
     // Create the runtime with all features enabled
@@ -20,7 +23,11 @@ fn main() {
         
         // Load menu asynchronously from the JSON menu file (changed from txt)
 //        let commands = Menu_Runner_core::load_menu_json_async().await;
-        let commands = Menu_Runner_core::load_menu_yaml_async().await;        
+//        let commands = Menu_Runner_core::load_menu_yaml_async().await;        
+        
+        // Load menu and button manager
+        let (commands, button_manager) = Menu_Runner_core::load_menu_with_button_manager().await;
+        let button_manager = Rc::new(Mutex::new(button_manager));
         if commands.is_empty() {
            // println!("No valid menu items found. Please check your configs/future_menu.json format.");
            println!("No valid menu items found. Please check your configs/menu_config.yaml format.");
@@ -59,11 +66,35 @@ fn main() {
         // Connect the menu_items property in your Slint UI to our model
         main_window.set_menu_items(ModelRc::from(menu_model.clone()));
         
+        // Set up button color provider callback
+        let button_manager_colors = button_manager.clone();
+        main_window.on_get_button_color(move |profile, action| {
+            let manager = button_manager_colors.lock().unwrap();
+            manager.get_button_color(&profile.to_string(), &action.to_string()).into()
+        });
+        let button_manager_click = button_manager.clone();
+
+
         // Set up command handler for when action buttons are clicked
         main_window.on_run_command(move |command_template, action| {
             // Get the command template and replace the action placeholder
             let mut command_str = command_template.to_string();
-            
+             // Extract profile name from command template
+            let profile_name = {
+                let parts: Vec<&str> = command_str.split('/').collect();
+                if let Some(last) = parts.last() {
+                    last.split('.').nth(1).unwrap_or("").to_string()
+                } else {
+                    "".to_string()
+                }
+            };
+             
+             // Update button visual state
+             {
+                 let mut manager = button_manager_click.lock().unwrap();
+                 manager.press_button(&profile_name, &action.to_string());
+             }
+                         
             // Replace the action placeholder
             command_str = command_str.replace("ACTION", &action.to_string());
             
@@ -101,8 +132,11 @@ fn main() {
         });
         
         println!("Starting UI...");
+        // Notify UI to refresh button colors if needed
+        main_window.invoke_refresh();
         
         // Run the UI loop (this blocks the current thread until UI is closed)
         main_window.run().unwrap();
+
     });
 }

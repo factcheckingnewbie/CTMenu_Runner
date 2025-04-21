@@ -1,5 +1,7 @@
 use std::collections::HashMap;
 use crate::models::{CommandInfo, GroupedMenuEntry, SlintMenuEntry};
+use crate::models::ButtonManager;
+
 use std::path::Path;
 use tokio::fs as tokio_fs;
 
@@ -205,7 +207,7 @@ pub fn group_menu_commands(commands: &[CommandInfo]) -> HashMap<String, Vec<Comm
 // Create Slint menu entries for the new GUI format
 pub fn create_slint_menu_entries(commands: &[CommandInfo]) -> Vec<SlintMenuEntry> {
     // Group commands by category
-    let mut grouped = group_menu_commands(commands);
+    let grouped = group_menu_commands(commands);
     let mut result = Vec::new();
     
     // Get a sorted list of categories to ensure consistent order
@@ -299,7 +301,73 @@ pub fn build_grouped_entries(commands: &[CommandInfo]) -> Vec<GroupedMenuEntry> 
     
     result
 }
+// Initialize button manager with automatic relationship detection
+pub fn initialize_button_manager(profiles: &[CommandInfo]) -> ButtonManager {
+    let mut manager = ButtonManager::new();
+    
+    // Group commands by category
+    let grouped = group_menu_commands(profiles);
+    
+    for (profile_name, cmds) in grouped {
+        let mut actions = Vec::new();
+        for cmd in &cmds {
+            let parts: Vec<&str> = cmd.name.split(' ').collect();
+            if parts.len() > 1 {
+                let action = parts[parts.len() - 1];
+                if !actions.contains(&action) {
+                    actions.push(action);
+                }
+            }
+        }
+        
+        // Auto-detect button relationships
+        if actions.contains(&"freeze") && actions.contains(&"unfreeze") {
+            // Create freeze/unfreeze relationship
+            let freeze_key = ButtonManager::make_key(&profile_name, "freeze");
+            let unfreeze_key = ButtonManager::make_key(&profile_name, "unfreeze");
+            
+            // Freeze affects unfreeze and itself
+            manager.button_affects.insert(
+                freeze_key.clone(), 
+                vec![unfreeze_key.clone(), freeze_key.clone()]
+            );
+            
+            // Unfreeze affects freeze and itself
+            manager.button_affects.insert(
+                unfreeze_key.clone(), 
+                vec![freeze_key.clone(), unfreeze_key.clone()]
+            );
+            
+            // Initialize colors
+            manager.button_colors.insert(freeze_key, "#007BFF".to_string());
+            manager.button_colors.insert(unfreeze_key, "#007BFF".to_string());
+        }
+        
+        // Set up kill to affect start
+        if actions.contains(&"kill") && actions.contains(&"start") {
+            let kill_key = ButtonManager::make_key(&profile_name, "kill");
+            let start_key = ButtonManager::make_key(&profile_name, "start");
+            
+            manager.button_affects.insert(
+                kill_key.clone(),
+                vec![start_key.clone()]
+            );
+            
+            manager.button_colors.insert(kill_key, "#007BFF".to_string());
+            manager.button_colors.insert(start_key, "#007BFF".to_string());
+        }
+    }
+    
+    manager
+}
 
+// Extension to load_menu_yaml_async to also return button manager
+pub async fn load_menu_with_button_manager() -> (Vec<CommandInfo>, ButtonManager) {
+    let commands = load_menu_yaml_async().await;
+    let button_manager = initialize_button_manager(&commands);
+    
+    (commands, button_manager)
+}
 // This function is kept for compatibility with the existing code structure,
 // although it always returns None with the new menu format.
 // It's used in the original lib.rs exports.
