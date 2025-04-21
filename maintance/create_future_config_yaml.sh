@@ -65,4 +65,4 @@ button_types:
     inactive_color: "#550000"
 EOF
 
-echo "Generated menu_config.yaml and ui_colors.yaml with simplified button states"
+echo "Generated menu_config.yaml and ui_colors.yaml with simplified button states "
