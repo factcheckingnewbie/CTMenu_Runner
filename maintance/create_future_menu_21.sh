@@ -58,5 +58,5 @@ for profile in ~/Stuff/Settings/firefox/*; do
 done
 
 echo "    }"
-echo "  ]"
+echo "  ]" 
 echo "}"
