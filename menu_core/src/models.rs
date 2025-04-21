@@ -1,6 +1,6 @@
-use serde::{Deserialize, Serialize}
 /// menu_core/src/models.rs
 /// Represents a single menu command entry
+use serde::{Deserialize, Serialize};
 #[derive(Clone)]
 pub struct MenuCommand {
     pub name: String,
