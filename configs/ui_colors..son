@@ -1,0 +1,34 @@
+{
+  "states": {
+    "stopped": {
+      "label_color": "#E0BC00"
+    },
+    "started": {
+      "label_color": "#FFD32C"
+    },
+    "frozen": {
+      "label_color": "#E0BC00"
+    },
+    "killed": {
+      "label_color": "#E0BC00"
+    }
+  },
+  "button_types": {
+    "start": {
+      "highlight_color": "#00AA00",
+      "inactive_color": "#005500"
+    },
+    "freeze": {
+      "highlight_color": "#0000AA",
+      "inactive_color": "#000055"
+    },
+    "unfreeze": {
+      "highlight_color": "#00AAAA",
+      "inactive_color": "#005555"
+    },
+    "kill": {
+      "highlight_color": "#AA0000",
+      "inactive_color": "#550000"
+    }
+  }
+}
