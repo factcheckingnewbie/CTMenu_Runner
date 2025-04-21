@@ -1,22 +1,22 @@
 #!/bin/bash
-# filepath: /workspaces/CTMenu_Runner/maintance/create_menu_yaml.sh
+# filepath: /workspaces/CTMenu_Runner/maintance/create_future_config_yaml.sh
 
 # Generate YAML configuration
 cat > ./menu_config.yaml << EOF
-# Button definitions with their state behavior
+# Button definitions 
 button_types:
   start:
-    applicable_states: [stopped, killed]
-    next_state: running
+    label: "Start"
+    order: 1
   freeze:
-    applicable_states: [running]
-    next_state: frozen
+    label: "Freeze"
+    order: 2
   unfreeze:
-    applicable_states: [frozen]
-    next_state: running
+    label: "Unfreeze"
+    order: 3
   kill:
-    applicable_states: [running, frozen]
-    next_state: killed
+    label: "Kill"
+    order: 4
 
 # Profiles with their actions
 profiles:
@@ -30,7 +30,11 @@ for profile in ~/Stuff/Settings/firefox/*; do
     # Add profile to YAML configuration
     cat >> ./menu_config.yaml << EOF
   - label: ${label}
-    current_state: stopped
+    button_states:
+      start: false
+      freeze: false
+      unfreeze: false
+      kill: false
     actions: [start, freeze, unfreeze, kill]
     command: "./target/debug/Menu_Runner_system ACTION firefox /path/to/${label}"
 EOF
@@ -38,31 +42,27 @@ done
 
 # Generate UI colors in a separate file
 cat > ./ui_colors.yaml << EOF
-# Colors for different states
-states:
-  stopped:
-    label_color: "#E0BC00"
-  running:
-    label_color: "#FFD32C"
-  frozen:
-    label_color: "#E0BC00"
-  killed:
-    label_color: "#E0BC00"
+# Colors for different button states
+button_styles:
+  active:
+    color: "#FFD32C"
+  inactive:
+    color: "#E0BC00"
 
-# Colors for different button types
+# Colors for specific buttons
 button_types:
   start:
-    highlight_color: "#00AA00"
+    active_color: "#00AA00"
     inactive_color: "#005500"
   freeze:
-    highlight_color: "#0000AA"
+    active_color: "#0000AA"
     inactive_color: "#000055"
   unfreeze:
-    highlight_color: "#00AAAA"
+    active_color: "#00AAAA"
     inactive_color: "#005555"
   kill:
-    highlight_color: "#AA0000"
+    active_color: "#AA0000"
     inactive_color: "#550000"
 EOF
 
-echo "Generated menu_config.yaml and ui_colors.yaml"
+echo "Generated menu_config.yaml and ui_colors.yaml with simplified button states"
