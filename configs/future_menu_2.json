@@ -1,0 +1,230 @@
+{
+  "button_types": {
+    "start": {
+      "applicable_states": ["stopped", "killed"],
+      "next_state": "started",
+      "highlight_color": "#00AA00",
+      "inactive_color": "#005500"
+    },
+    "freeze": {
+      "applicable_states": ["started"],
+      "next_state": "frozen",
+      "highlight_color": "#0000AA",
+      "inactive_color": "#000055"
+    },
+    "unfreeze": {
+      "applicable_states": ["frozen"],
+      "next_state": "started",
+      "highlight_color": "#00AAAA",
+      "inactive_color": "#005555"
+    },
+    "kill": {
+      "applicable_states": ["started", "frozen"],
+      "next_state": "killed",
+      "highlight_color": "#AA0000",
+      "inactive_color": "#550000"
+    }
+  },
+  "profiles": [
+    {
+      "label": "AI-chat-Behavior",
+      "current_state": "stopped",
+      "actions": [
+        "start",
+        "freeze",
+        "unfreeze",
+        "kill"
+      ]
+    },
+    {
+      "label": "AI-Chatt",
+      "current_state": "stopped",
+      "actions": [
+        "start",
+        "freeze",
+        "unfreeze",
+        "kill"
+      ]
+    },
+    {
+      "label": "AI_Suite",
+      "current_state": "stopped",
+      "actions": [
+        "start",
+        "freeze",
+        "unfreeze",
+        "kill"
+      ]
+    },
+    {
+      "label": "config_firefox",
+      "current_state": "stopped",
+      "actions": [
+        "start",
+        "freeze",
+        "unfreeze",
+        "kill"
+      ]
+    },
+    {
+      "label": "Development_Read",
+      "current_state": "stopped",
+      "actions": [
+        "start",
+        "freeze",
+        "unfreeze",
+        "kill"
+      ]
+    },
+    {
+      "label": "Github",
+      "current_state": "stopped",
+      "actions": [
+        "start",
+        "freeze",
+        "unfreeze",
+        "kill"
+      ]
+    },
+    {
+      "label": "Grafikkort",
+      "current_state": "stopped",
+      "actions": [
+        "start",
+        "freeze",
+        "unfreeze",
+        "kill"
+      ]
+    },
+    {
+      "label": "Gui-Rust",
+      "current_state": "stopped",
+      "actions": [
+        "start",
+        "freeze",
+        "unfreeze",
+        "kill"
+      ]
+    },
+    {
+      "label": "Interfaces",
+      "current_state": "stopped",
+      "actions": [
+        "start",
+        "freeze",
+        "unfreeze",
+        "kill"
+      ]
+    },
+    {
+      "label": "Media",
+      "current_state": "stopped",
+      "actions": [
+        "start",
+        "freeze",
+        "unfreeze",
+        "kill"
+      ]
+    },
+    {
+      "label": "Menu_Runner",
+      "current_state": "stopped",
+      "actions": [
+        "start",
+        "freeze",
+        "unfreeze",
+        "kill"
+      ]
+    },
+    {
+      "label": "Misc",
+      "current_state": "stopped",
+      "actions": [
+        "start",
+        "freeze",
+        "unfreeze",
+        "kill"
+      ]
+    },
+    {
+      "label": "Models",
+      "current_state": "stopped",
+      "actions": [
+        "start",
+        "freeze",
+        "unfreeze",
+        "kill"
+      ]
+    },
+    {
+      "label": "MumLar",
+      "current_state": "stopped",
+      "actions": [
+        "start",
+        "freeze",
+        "unfreeze",
+        "kill"
+      ]
+    },
+    {
+      "label": "python-Async",
+      "current_state": "stopped",
+      "actions": [
+        "start",
+        "freeze",
+        "unfreeze",
+        "kill"
+      ]
+    },
+    {
+      "label": "remoteAccess",
+      "current_state": "stopped",
+      "actions": [
+        "start",
+        "freeze",
+        "unfreeze",
+        "kill"
+      ]
+    },
+    {
+      "label": "Slask",
+      "current_state": "stopped",
+      "actions": [
+        "start",
+        "freeze",
+        "unfreeze",
+        "kill"
+      ]
+    },
+    {
+      "label": "Slint",
+      "current_state": "stopped",
+      "actions": [
+        "start",
+        "freeze",
+        "unfreeze",
+        "kill"
+      ]
+    },
+    {
+      "label": "Tmp",
+      "current_state": "stopped",
+      "actions": [
+        "start",
+        "freeze",
+        "unfreeze",
+        "kill"
+      ]
+    },
+    {
+      "label": "VibeCoding",
+      "current_state": "stopped",
+      "actions": [
+        "start",
+        "freeze",
+        "unfreeze",
+        "kill"
+      ]
+    }
+  ]
+}
