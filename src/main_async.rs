@@ -8,10 +8,9 @@ slint::include_modules!();
 use slint::{ModelRc, VecModel, SharedString};
 use tokio::runtime::Runtime;
 // use tokio::process::Command as TokioCommand;
-
 // Import the core types from our menu_core library
-// use Menu_Runner_core::create_slint_menu_entries;
-use Menu_Runner_core::{create_slint_menu_entries, models::ButtonManager};
+ use Menu_Runner_core::create_slint_menu_entries;
+// use Menu_Runner_core::{create_slint_menu_entries, models::ButtonManager};
 
 fn main() {
     // Create the runtime with all features enabled
@@ -20,12 +19,10 @@ fn main() {
     // Enter the runtime context
     rt.block_on(async {
         println!("Starting async menu loader...");
-        
-        // Load menu asynchronously from the JSON menu file (changed from txt)
+// Load menu asynchronously from the JSON menu file (changed from txt)
 //        let commands = Menu_Runner_core::load_menu_json_async().await;
 //        let commands = Menu_Runner_core::load_menu_yaml_async().await;        
-        
-        // Load menu and button manager
+// Load menu and button manager
         let (commands, button_manager) = Menu_Runner_core::load_menu_with_button_manager().await;
         let button_manager = Rc::new(Mutex::new(button_manager));
         if commands.is_empty() {
