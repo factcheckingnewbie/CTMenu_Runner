@@ -18,12 +18,13 @@ export component MainWindow inherits Window {
         Text {
             text: "Menu Runner";
             font-size: 24px;
+            color: #4af;
             horizontal-alignment: TextHorizontalAlignment.center;
         }
 
         Rectangle {
             height: 1px;
-            background: #ccc;
+            background: #aaa;
         }
 
         ScrollView {
@@ -36,16 +37,34 @@ export component MainWindow inherits Window {
                         horizontal-alignment: TextHorizontalAlignment.center;
                         padding-top: 10px;
                         padding-bottom: 5px;
+                        color: #4cf;
                     }
 
                     HorizontalBox {
                         alignment: LayoutAlignment.center;
-                        spacing: 5px;
-                        
+                        spacing: 3px;
+
+// ////////////
+// Button {
+//       text: is-toggled ? "toggled" : "untoggled";
+//       width: 120px;
+//       checkable: true;
+//       height: 40px;
+//
+//       clicked => {
+//           is-toggled = !is-toggled;
+//
+//       }
+//   }
+// ////////////
+                        property <bool> is-toggled: false;
                         for action in menu_item.actions: Button {
-                            text: action;
+                            // text: action;
+                            text: is-toggled ? "toggled" : action ;
+                            checkable: true;
                             property <string> current-action: action;
                             clicked => {
+                               is-toggled = !is-toggled;
                                 // Explicitly use the action from the loop's current scope
                                 root.run_command(menu_item.command-template, self.current-action);
                             }
