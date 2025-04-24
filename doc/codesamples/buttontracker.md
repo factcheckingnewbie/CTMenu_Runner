@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 ## Parser
+=======
+[200~## Parser
+>>>>>>> 3395cba980a70e2871c978709a26853445f989ec
 use std::collections::HashMap;
 use regex::Regex;
 
@@ -132,3 +136,14 @@ This approach:
     2. Allows encoding button relationships and colors in your action strings
     3. Can handle arbitrary button relationships without hardcoding
     4. Uses a simple format like "freeze:unfreeze:#3d8f46" to mean "freeze affects unfreeze and uses green color"
+<<<<<<< HEAD
+=======
+
+
+1. Separates UI from state management logic
+2. Provides a simple interface for toggling buttons
+3. Automatically handles relationships between buttons
+4. Works with your existing menu structure
+5. Makes future extensions easier.
+
+>>>>>>> 3395cba980a70e2871c978709a26853445f989ec

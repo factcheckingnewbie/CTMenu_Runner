@@ -26,3 +26,7 @@
    3. The UI shows "unfreeze" when toggled
    4. The command sent to run_command is the appropriate part of the string based on toggle state
    5. No external ButtonStateTracker needed - all handled directly in the UI
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3395cba980a70e2871c978709a26853445f989ec
